@@ -3,6 +3,8 @@ const {Client} = require('pg')
 const express = require("express")
 
 app = express();
+app.use(express.json());
+app.use(express.urlencoded( {extended : true}));
 
 const client = new Client({
     user: 'postgres',
@@ -13,6 +15,36 @@ const client = new Client({
 })
 
 client.connect()
+
+app.post("/manufacturers", (req, resp) => {
+  console.log("In /manufacturers POST");
+  const myQuery = {
+      text: "INSERT INTO manufacturers (name, country, link1, link2, description, more_details) VALUES ($1, $2, $3, $4, $5, $6)",
+      values: [req.body.name, req.body.country, req.body.link1, req.body.link2, req.body.description, req.body.more_details]
+  } 
+  client
+    .query(myQuery)
+    .then((results) => {
+        console.log("success");
+        console.log(results.rowCount);
+        resp.writeHead(200, {
+            "Content-Type": "text/json",
+            "Access-Control-Allow-Origin": "*"
+        });
+        resp.write(JSON.stringify("ok"));
+        resp.end();
+    })
+    .catch((error) => {
+        console.log("Ooops!");
+        console.log(error);
+        resp.writeHead(200, {
+            "Content-Type": "text/json",
+            "Access-Control-Allow-Origin": "*"
+        });
+        resp.write(JSON.stringify("Failed"));
+        resp.end();
+    });
+})
 
 app.get("/manufacturers", (req, resp) => {
 client
