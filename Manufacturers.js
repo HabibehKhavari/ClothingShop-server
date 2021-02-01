@@ -23,7 +23,7 @@ client
         resp.writeHead(200, {
             "Content-Type": "text/json"
         })
-        resp.write(JSON.stringify(resuits.rows));
+        resp.write(JSON.stringify(results.rows));
         resp.end();
     })
     .catch( function (error) {
