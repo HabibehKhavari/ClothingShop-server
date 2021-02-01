@@ -21,7 +21,8 @@ client
         console.log("Success");
         console.log(results.rowCount);
         resp.writeHead(200, {
-            "Content-Type": "text/json"
+            "Content-Type": "text/json",
+            "Access-Control-Allow-Origin": "*"
         })
         resp.write(JSON.stringify(results.rows));
         resp.end();
@@ -31,7 +32,8 @@ client
         console.log(error);
         console.log(error);
         resp.writeHead(200, {
-            "Content-Type": "text/json"
+            "Content-Type": "text/json",
+            "Access-Control-Allow-Origin": "*"
         })
         resp.write(JSON.stringify("Failed"));
         resp.end();
