@@ -1,5 +1,9 @@
 const { error } = require('console');
 const {Client} = require('pg')
+const express = require("express")
+
+app = express();
+
 const client = new Client({
     user: 'postgres',
     host: 'localhost',
@@ -9,16 +13,35 @@ const client = new Client({
 })
 
 client.connect()
+
+app.get("/manufacturers", (req, resp) => {
 client
     .query('SELECT * FROM manufacturers')
     .then(function(results){
         console.log("Success");
         console.log(results.rowCount);
-        client.end();
+        resp.writeHead(200, {
+            "Content-Type": "text/json"
+        })
+        resp.write(JSON.stringify(resuits.rows));
+        resp.end();
     })
     .catch( function (error) {
         console.log("Oooops");
-        console.log(err);
-        client.end();
+        console.log(error);
+        console.log(error);
+        resp.writeHead(200, {
+            "Content-Type": "text/json"
+        })
+        resp.write(JSON.stringify("Failed"));
+        resp.end();
     });
-    console.log("server is finishing");
+});
+
+app.get("/", (req, resp) => {
+    resp.write("In GET /");
+    resp.end();
+})
+
+app.listen(3000, () => {
+     console.log("Server started and listening to port 3000") });
