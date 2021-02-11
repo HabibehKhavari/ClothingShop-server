@@ -113,7 +113,8 @@ app.post("/manufacturers", (req, resp) => {
 })
 
 app.get("/manufacturers", (req, resp) => {
-    let filterName = req.query.filterName;
+    let filterName = req.query.filterName ? req.query.filterName : "";
+    console.log("filter name: "+ filterName);
     const myQuery = {
         text:"SELECT * FROM manufacturers WHERE name LIKE $1",
         values: ["%"+filterName+"%"]
