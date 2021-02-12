@@ -112,6 +112,36 @@ app.post("/manufacturers", (req, resp) => {
         });
 })
 
+app.put("/manufacturers", (req,resp) => {
+    console.log("in /manufacturers PUT");
+    const myQuery = {
+        text: "UPDATE manufacturers SET name = $2, country = $3, link1 = $4, link2 = $5, description = $6, more_details = $7, WHERE id = $1",
+        values: [req.body.id, req.body.name, req.body.country, req.body.link1, req.body.link2, req.body.description, req.body.more_details]
+    }
+    client
+        .query(myQuery)
+        .then((resuits) => {
+            console.log("Success!");
+            console.log(resuits.rowCount);
+            resp.writeHead(200, {
+                "Content-Type": "text/json",
+                "Access-Control-Allow-Origin": "*",
+            });
+            resp.write(JSON.stringify("ok"));
+            resp.end();
+        })
+        .catch((error) => {
+            console.log("Ooops!");
+            console.log(error);
+            resp.writeHead(200, {
+                "Content-Type": "text/json",
+                "Access-Control-Allow-Origin": "*",
+            })
+            resp.write(JSON.stringify("Failed"));
+            resp.end();
+        }); 
+})
+
 app.get("/manufacturers", (req, resp) => {
     let filterName = req.query.name ? req.query.name : "";
     console.log("filter name: "+ filterName);
