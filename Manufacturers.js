@@ -112,8 +112,8 @@ app.post("/manufacturers", (req, resp) => {
         });
 })
 
-app.put("/manufacturers", (req,resp) => {
-    console.log("in /manufacturers PUT");
+function updateFromAPIEndpoint (req,resp) {
+    console.log("in /manufacturers PUT using the POST");
     const myQuery = {
         text: "UPDATE manufacturers SET name = $2, country = $3, link1 = $4, link2 = $5, description = $6, more_details = $7, WHERE id = $1",
         values: [req.body.id, req.body.name, req.body.country, req.body.link1, req.body.link2, req.body.description, req.body.more_details]
@@ -140,7 +140,9 @@ app.put("/manufacturers", (req,resp) => {
             resp.write(JSON.stringify("Failed"));
             resp.end();
         }); 
-})
+}
+app.put("/manufacturers", updateFromAPIEndpoint);
+app.post("/manufacturers/PUT/", updateFromAPIEndpoint);
 
 app.get("/manufacturers", (req, resp) => {
     let filterName = req.query.name ? req.query.name : "";
