@@ -115,7 +115,7 @@ app.post("/manufacturers", (req, resp) => {
 function updateFromAPIEndpoint (req,resp) {
     console.log("in /manufacturers PUT using the POST");
     const myQuery = {
-        text: "UPDATE manufacturers SET name = $2, country = $3, link1 = $4, link2 = $5, description = $6, more_details = $7, WHERE id = $1",
+        text: "UPDATE manufacturers SET name = $2, country = $3, link1 = $4, link2 = $5, description = $6, more_details = $7 WHERE id = $1",
         values: [req.body.id, req.body.name, req.body.country, req.body.link1, req.body.link2, req.body.description, req.body.more_details]
     }
     client
