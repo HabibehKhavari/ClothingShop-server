@@ -34,31 +34,31 @@ INSERT INTO manufacturers (name, country, link1, link2, description, more_detail
 
 
 ----------------clothes---------------
-CREATE TABLE clothes ( id SERIAL PRIMARY KEY, name VARCHAR, image VARCHAR, manufacturer VARCHAR, description VARCHAR, more_details VARCHAR, promotion BOOLEAN, manufacturers_id integer REFERENCES manufacturers (id));
+CREATE TABLE clothes ( id SERIAL PRIMARY KEY, code VARCHAR UNIQUE, image VARCHAR, manufacturer VARCHAR, description VARCHAR, more_details VARCHAR, promotion BOOLEAN, manufacturers_id integer REFERENCES manufacturers (id));
 
-INSERT INTO clothes (name, image, manufacturer, description, more_details, promotion, manufacturers_id) VALUES 
-('shoes',
+INSERT INTO clothes (code, image, manufacturer, description, more_details, promotion, manufacturers_id) VALUES 
+    ('s65432',
     'img/shoes.png',
     'Ade',
     'Price:$55 | Size:39 | Color:white',
     'Material:cotton & leather | Brand:Nike | Made in Germany.',
     'TRUE',
     '1'),
-('shoes',
+    ('s76543',
     'img/shoes.png',
     'Habibeh',
     'Price:$55 | Size:39 | Color:white',
     'Material:cotton & leather | Brand:Nike | Made in Germany.',
     'TRUE',
     '4'),
-    ('bag',
+    ('b6543',
     'img/bag.png',
     'Denis',
     'Price:$49 | Size:large | Color:black',
     'Material:cotton | Brand:TRIPP | Made in China.',
     'TRUE',
     '2'),
-    ('dress',
+    ('d65432',
     'img/dress.png',
     'Abanoub',
     'Price:$28 | Size:38 | Color:dark blue',
