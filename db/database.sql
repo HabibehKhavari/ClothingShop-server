@@ -41,16 +41,14 @@ INSERT INTO clothes (name, image, manufacturer, description, more_details, promo
     'img/shoes.png',
     'Ade',
     'Price:$55 | Size:39 | Color:white',
-    'Material:cotton & leather | Brand:Nike |
-            Made in Germany.',
+    'Material:cotton & leather | Brand:Nike | Made in Germany.',
     'TRUE',
     '1'),
 ('shoes',
     'img/shoes.png',
     'Habibeh',
     'Price:$55 | Size:39 | Color:white',
-    'Material:cotton & leather | Brand:Nike |
-            Made in Germany.',
+    'Material:cotton & leather | Brand:Nike | Made in Germany.',
     'TRUE',
     '4'),
     ('bag',
