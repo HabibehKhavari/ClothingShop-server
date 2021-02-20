@@ -13,11 +13,19 @@ const client = new Client({
 
 client.connect()
 app.get("/clothes", (req, resp) => {
+    let filterName = req.query.filterName ? req.query.filterName : "";
+    console.log(filterName); 
+    
+    const myQuery = {
+        text: "SELECT * FROM clothes WHERE name LIKE $1",
+        values: ["%"+filterName+"%"]
+    }
+
     client
-        .query('SELECT * FROM clothes')
+        .query(myQuery)
         .then(function (results) {
             console.log("Success!");
-            console.log(resuits.rowCount);
+            console.log(results.rowCount);
             resp.writeHead(200, {
                 "Content-Type": "text/json",
                 "Access-Control-Allow-Origin": "*"
