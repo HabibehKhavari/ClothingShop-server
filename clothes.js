@@ -2,6 +2,8 @@ const { Client } = require('pg')
 const express = require("express")
 
 app = express();
+app.use(express.json());
+app.use(express.urlencoded( {extended: true} ));
 
 const client = new Client({
     user: 'postgres',
@@ -12,13 +14,46 @@ const client = new Client({
 })
 
 client.connect()
-app.get("/clothes", (req, resp) => {
-    let filterName = req.query.filterName ? req.query.filterName : "";
-    console.log(filterName); 
-    
+
+app.post("/clothes", (req, resp) => {
+    console.log("In /clothes POST");
+
     const myQuery = {
-        text: "SELECT * FROM clothes WHERE name LIKE $1",
-        values: ["%"+filterName+"%"]
+        text: "INSERT INTO clothes (code, image, manufacturer, description, more_details, promotion, manufacturers_id) VALUES ($1, $2, $3, $4, $5 ,$6 ,$7)",
+        values: [req.body.code, req.body.image, req.body.manufacturer, req.body.description, req.body.more_details, req.body.promotion, req.body.manufacturers_id]
+    }
+
+    client
+        .query(myQuery)
+        .then((results) => {
+            console.log("Success!");
+            console.log(results.rowCount);
+            resp.writeHead(200, {
+                "Content-Type": "text/json",
+                "Access-Control-Allow-Origin": "*"
+            });
+            resp.write(JSON.stringify("ok"));
+            resp.end();
+        })
+        .catch((error) => {
+            console.log("Ooops!");
+            console.log(error);
+            resp.writeHead(200, {
+                "Content-Type": "text/json",
+                "Access-Control-Allow-Origin": "*"
+            })
+            resp.write(JSON.stringify("Failed"));
+            resp.end();
+        });
+});
+
+app.get("/clothes", (req, resp) => {
+    let filterCode = req.query.filterCode ? req.query.filterCode : "";
+    console.log(filterCode); 
+
+    const myQuery = {
+        text: "SELECT * FROM clothes WHERE code LIKE $1",
+        values: ["%"+filterCode+"%"]
     }
 
     client
