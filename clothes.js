@@ -15,6 +15,39 @@ const client = new Client({
 
 client.connect()
 
+
+app.get("/clothes/DELETE/:id", (req, resp) => {
+    console.log("In /clothes/DELETE using GET");
+
+    const myQuery = {
+        text: "DELETE FROM clothes WHERE id = $1",
+        values: [req.params.id]
+    }
+
+    client
+        .query(myQuery)
+        .then((results) => {
+            console.log("Success!");
+            console.log(results.rowCount);
+            resp.writeHead(200, {
+                "Content-Type": "text/json",
+                "Access-Control-Allow-Origin": "*"
+            });
+            resp.write(JSON.stringify("ok"));
+            resp.end();
+        })
+        .catch((error) => {
+            console.log("Ooops!");
+            console.log(error);
+            resp.writeHead(200, {
+                "Content-Type": "text/json",
+                "Access-Control-Allow-Origin": "*"
+            })
+            resp.write(JSON.stringify("Failed"));
+            resp.end();
+        });
+});
+
 app.delete("/clothes", (req, resp) => {
     console.log("In /clothes DELETE");
     resp.write("Please add the id at the path, eg clothes/21, in order to delet the id=21");
