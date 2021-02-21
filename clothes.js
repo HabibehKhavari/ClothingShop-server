@@ -124,7 +124,7 @@ app.get("/clothes", (req, resp) => {
     console.log(filterCode); 
 
     const myQuery = {
-        text: "SELECT * FROM clothes WHERE code LIKE $1",
+        text: "SELECT * FROM clothes WHERE UPPER(code) LIKE UPPER($1)",
         values: ["%"+filterCode+"%"]
     }
 
