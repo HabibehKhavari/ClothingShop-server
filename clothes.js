@@ -16,6 +16,41 @@ const client = new Client({
 client.connect()
 
 
+app.put("/clothes", (req, resp) => {
+    console.log("In /clothes PUT");
+
+
+    // req.body.id
+    const myQuery = {
+        text: "UPDATE clothes SET code = $2, image = $3, manufacturer = $4, description = $5, more_details = $6, promotion = $7, manufacturers_id = $8 WHERE id = $1",
+        values: [req.body.id, req.body.code, req.body.image, req.body.manufacturer, req.body.description, req.body.more_details, req.body.promotion, req.body.manufacturers_id]
+    }
+
+    client
+        .query(myQuery)
+        .then((results) => {
+            console.log("Success!");
+            console.log(results.rowCount);
+            resp.writeHead(200, {
+                "Content-Type": "text/json",
+                "Access-Control-Allow-Origin": "*",
+            });
+            resp.write(JSON.stringify("ok"));
+            resp.end();
+        })
+        .catch((error) => {
+            console.log("Ooops!");
+            console.log(error);
+            resp.writeHead(200, {
+                "Content-Type": "text/json",
+                "Access-Control-Allow-Origin": "*",
+            })
+            resp.write(JSON.stringify("Failed"));
+            resp.end();
+        });
+})
+
+
 app.get("/clothes/DELETE/:id", (req, resp) => {
     console.log("In /clothes/DELETE using GET");
 
