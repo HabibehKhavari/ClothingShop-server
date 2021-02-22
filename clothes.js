@@ -3,7 +3,7 @@ const express = require("express")
 
 app = express();
 app.use(express.json());
-app.use(express.urlencoded( {extended: true} ));
+app.use(express.urlencoded({ extended: true }));
 
 const client = new Client({
     user: 'postgres',
@@ -16,8 +16,9 @@ const client = new Client({
 client.connect()
 
 
-app.put("/clothes", (req, resp) => {
-    console.log("In /clothes PUT");
+function updateFromAPIEndpoint(req, resp) {
+
+    console.log("In /clothes PUT using the POST (workaround)");
 
 
     // req.body.id
@@ -48,7 +49,11 @@ app.put("/clothes", (req, resp) => {
             resp.write(JSON.stringify("Failed"));
             resp.end();
         });
-})
+}
+
+app.post("/clothes/PUT/", updateFromAPIEndpoint);
+
+app.put("/clothes", updateFromAPIEndpoint);
 
 
 app.get("/clothes/DELETE/:id", (req, resp) => {
@@ -86,7 +91,7 @@ app.get("/clothes/DELETE/:id", (req, resp) => {
 app.delete("/clothes", (req, resp) => {
     console.log("In /clothes DELETE");
     resp.write("Please add the id at the path, eg clothes/21, in order to delet the id=21");
-    resp.end();    
+    resp.end();
 });
 
 app.delete("/clothes/:id", (req, resp) => {
@@ -156,11 +161,11 @@ app.post("/clothes", (req, resp) => {
 
 app.get("/clothes", (req, resp) => {
     let filterCode = req.query.filterCode ? req.query.filterCode : "";
-    console.log(filterCode); 
+    console.log(filterCode);
 
     const myQuery = {
         text: "SELECT * FROM clothes WHERE UPPER(code) LIKE UPPER($1)",
-        values: ["%"+filterCode+"%"]
+        values: ["%" + filterCode + "%"]
     }
 
     client
