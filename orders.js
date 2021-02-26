@@ -16,8 +16,9 @@ const client = new Client({
 
 client.connect()
 
-app.put("/orders", (req, resp) => {
-    console.log("In /orders PUT");
+function updateFromAPIEndpoint(req, resp) {
+
+    console.log("In /orders PUT using the POST (workaround)");
 
 
     // req.body.id
@@ -48,8 +49,9 @@ app.put("/orders", (req, resp) => {
             resp.write(JSON.stringify("Failed"));
             resp.end();
         });
-})
-
+}
+app.post("/orders/PUT/", updateFromAPIEndpoint)
+app.put("/orders", updateFromAPIEndpoint)
 
 app.get("/orders/DELETE/:id", (req, resp) => {
     console.log("In /orders/DELETE using GET");
