@@ -65,3 +65,16 @@ INSERT INTO clothes (code, image, manufacturer, description, more_details, promo
     'Material:cotton | Brand:H&M | Made in Greece.',
     'TRUE',
     '3');
+
+
+    ------------------------orders---------------------------
+    CREATE TABLE orders ( id SERIAL PRIMARY KEY, order_date DATE NOT NULL DEFAULT CURRENT_DATE, quantity integer, customer_code VARCHAR (10), cloth_code VARCHAR REFERENCES clothes (code));
+
+    INSERT INTO orders (quantity, customer_code, cloth_code) VALUES 
+    ('5',
+    '98765421',
+    'd65432'),
+    ('2',
+    '9876543210',
+    'd65432');
+
