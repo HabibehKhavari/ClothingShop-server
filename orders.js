@@ -14,8 +14,14 @@ const client = new Client({
 client.connect()
 
 app.get("/orders", (req, resp) => {
+    let filterCode = req.query.filterCustomerCode ? req.query.filterCustomerCode : "";
+    console.log(filterCode);
+    const myQuery = {
+        text: "SELECT * FROM orders WHERE customer_code LIKE $1",
+        values: ["%" + filterCode + "%"]
+    }
     client
-        .query('SELECT * FROM orders')
+        .query(myQuery)
         .then((results) => {
             console.log("Success!");
             console.log(results.rowCount);
