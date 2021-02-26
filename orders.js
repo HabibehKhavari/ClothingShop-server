@@ -16,6 +16,44 @@ const client = new Client({
 
 client.connect()
 
+app.delete("/orders", (req, resp) => {
+    console.log("In /orders DELETE");
+    resp.write("Please add the id at the path, eg orders/21, in order to delet the id=21");
+    resp.end();    
+});
+
+app.delete("/orders/:id", (req, resp) => {
+    console.log("In /orders DELETE");
+
+    const myQuery = {
+        text: "DELETE FROM orders WHERE id = $1",
+        values: [req.params.id]
+    }
+
+    client
+        .query(myQuery)
+        .then((results) => {
+            console.log("Success!");
+            console.log(results.rowCount);
+            resp.writeHead(200, {
+                "Content-Type": "text/json",
+                "Access-Control-Allow-Origin": "*"
+            });
+            resp.write(JSON.stringify("ok"));
+            resp.end();
+        })
+        .catch((error) => {
+            console.log("Ooops!");
+            console.log(error);
+            resp.writeHead(200, {
+                "Content-Type": "text/json",
+                "Access-Control-Allow-Origin": "*"
+            })
+            resp.write(JSON.stringify("Failed"));
+            resp.end();
+        });
+});
+
 app.post("/orders", (req, resp) => {
     console.log("In /orders POST");
 
