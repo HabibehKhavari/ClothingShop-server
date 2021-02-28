@@ -355,6 +355,39 @@ app.get("/clothes", (req, resp) => {
         });
 });
 
+///////////////////////clothes/orderable/:id///////////////////////
+
+app.get("/cloth/orderable/:id", (req, resp) => {
+    console.log("in cloth/orderable/ GET");
+    const myQuery = {
+        text: "SELECT clothes.id, manufacturers.name AS manufacturer_name, manufacturers.country, clothes.code AS cloth_code, clothes.image, clothes.description, clothes.more_details FROM clothes, manufacturers where clothes.manufacturers_id = manufacturers.id and clothes.id = $1",
+        values: [req.params.id]
+    }
+    client
+        .query(myQuery)
+        .then((results) => {
+            console.log("success!");
+            console.log(results.rowCount);
+            resp.writeHead(200, {
+                "Content-Type": "text/json",
+                "Access-Control-Allow-Origin": "*"
+            });
+            resp.write(JSON.stringify(results.rows));
+            resp.end();
+        })
+        .catch((error) => {
+            console.log("Ooooops!");
+            console.log(error);
+            resp.writeHead(200, {
+                "Content-Type": "text/json",
+                "Access-Control-Allow-Origin": "*"
+            });
+            resp.write(JSON.stringify("Failed"));
+            resp.end();
+        })
+})
+
+
 //////////////////////orders///////////////////////////
 
 function updateOrderFromAPIEndpoint(req, resp) {

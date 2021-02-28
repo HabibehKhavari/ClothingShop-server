@@ -78,3 +78,15 @@ INSERT INTO clothes (code, image, manufacturer, description, more_details, promo
     '9876543210',
     'd65432');
 
+
+------------------------------------------
+SELECT column_Name1,column_name2,......
+  From tbl_name1,tbl_name2,tbl_name3
+  where tbl_name1.column_name = tbl_name2.column_name 
+  and tbl_name2.column_name = tbl_name3.column_name
+  ----------------------------------------
+
+----------clothes/orderable----------------
+SELECT clothes.id, manufacturers.name AS manufacturer_name, manufacturers.country, clothes.code AS cloth_code, clothes.image, clothes.description, clothes.more_details
+FROM clothes, manufacturers
+where clothes.manufacturers_id = manufacturers.id and clothes.id = $1
