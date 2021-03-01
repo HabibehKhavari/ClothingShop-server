@@ -387,6 +387,38 @@ app.get("/cloth/orderable/:id", (req, resp) => {
         })
 })
 
+/////////////////////////cloth?promotion=true//////////////////////////////
+app.get("/cloth", (req, resp) => {
+    let filterPromotion = req.query.promotion ? req.query.promotion : "";
+    console.log(filterPromotion);
+
+    const myQuery = {
+        text: "SELECT * FROM clothes WHERE promotion=$1",
+        values: [filterPromotion]
+    }
+    client
+        .query(myQuery)
+        .then(function (results) {
+            console.log("Success!");
+            console.log(results.rowCount);
+            resp.writeHead(200, {
+                "Content-Type": "text/json",
+                "Access-Control-Allow-Origin": "*"
+            });
+            resp.write(JSON.stringify(results.rows));
+            resp.end();
+        })
+        .catch(function (error) {
+            console.log("Ooops!");
+            console.log(error);
+            resp.writeHead(200, {
+                "Content-Type": "text/json",
+                "Access-Control-Allow-Origin": "*"
+            });
+            resp.write(JSON.stringify("Failed"));
+            resp.end();
+        });
+});
 
 //////////////////////orders///////////////////////////
 
